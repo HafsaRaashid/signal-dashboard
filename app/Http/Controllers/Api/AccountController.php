@@ -14,8 +14,16 @@ class AccountController extends Controller
         return Account::all();
     }
 
-    public function signals($id)
+    public function signals(Request $request,$id)
     {
-        return Signal::where('account_id', $id)->get();
+
+        $query =Signal::where('account_id', $id);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        return $query->get();
     }
 }
