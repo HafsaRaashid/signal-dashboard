@@ -1,0 +1,50 @@
+import { useState } from "react";
+const API = import.meta.env.VITE_API_URL;
+
+
+export default function AddSignalForm({ account, onSignalAdded }) {
+  const [form, setForm] = useState({ type: "", payload: "" });
+
+  const handleSubmit = async () => {
+    if (!form.type || !form.payload) return;
+    const res = await fetch(`${API}/api/signals`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ account_id: account.id, ...form }),
+    });
+    const newSignal = await res.json();
+    onSignalAdded(newSignal);
+    setForm({ type: "", payload: "" });
+  };
+
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-4">
+      <h3 className="text-sm font-semibold text-zinc-300 mb-4">Add New Signal</h3>
+      <div className="flex flex-col gap-3">
+        <select
+          value={form.type}
+          onChange={(e) => setForm({ ...form, type: e.target.value })}
+          className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
+        >
+          <option value="">Select Type</option>
+          <option value="intent">Intent</option>
+          <option value="web_visit">Web Visit</option>
+          <option value="form_fill">Form Fill</option>
+          <option value="linkedin">LinkedIn</option>
+        </select>
+        <input
+          value={form.payload}
+          onChange={(e) => setForm({ ...form, payload: e.target.value })}
+          placeholder="Payload (e.g. visited pricing page)"
+          className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
+        />
+        <button
+          onClick={handleSubmit}
+          className="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg transition-colors"
+        >
+          Add Signal
+        </button>
+      </div>
+    </div>
+  );
+}

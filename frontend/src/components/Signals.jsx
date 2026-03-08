@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import SignalCard from "./SignalCard";
 import AddSignalForm from "./AddSignalForm";
 
 const API = import.meta.env.VITE_API_URL;
@@ -43,7 +44,7 @@ export default function SignalList({ account }) {
       <div className="flex gap-4 mb-6">
         {/* Signal type filters */}
         <select
-          className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
+          className="bg-zinc-800 text-zinc-300 pl-2 pr-0 py-2 rounded-lg text-sm cursor-pointer"
           onChange={(e) => setFilters({ ...filters, type: e.target.value })}>
           <option value="">All Types</option>
           <option value="intent">Intent</option>
@@ -54,7 +55,7 @@ export default function SignalList({ account }) {
 
         {/* Signal status filters */}
         <select
-          className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
+          className="bg-zinc-800 text-zinc-300 pl-2 pr-0 py-2 rounded-lg text-sm cursor-pointer"
           onChange={(e) => setFilters({ ...filters, status: e.target.value })}
         >
           <option value="">All Statuses</option>
@@ -64,11 +65,23 @@ export default function SignalList({ account }) {
 
         {/* Add signal button */}
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => setShowForm(!showForm)}
           className="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg">
           + Add Signal
         </button>
       </div>
+      
+      {/* Add Signal Form */}
+      <AddSignalForm account={account} onSignalAdded={(s) => setSignals([s, ...signals])} />
+      {showForm && (
+        <AddSignalForm
+          account={account}
+          onSignalAdded={(newSignal) => {
+            setSignals((prev) => [newSignal, ...prev ]);
+            setShowForm(false);
+          }}
+        />
+      )}
 
       {/* Signal Cards */}
       <div className="flex flex-col gap-3 mb-8">
