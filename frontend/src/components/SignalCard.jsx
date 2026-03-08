@@ -4,7 +4,13 @@
         <div key={signal.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex justify-between items-start">
             <div>
                 <span className="text-xs uppercase tracking-widest text-sky-400">{signal.type}</span>
-                <p className="text-sm text-zinc-300 mt-1">{JSON.stringify(signal.payload)}</p>
+                <div className="flex flex-wrap gap-2 mt-1">
+                    {Object.entries(signal.payload ?? {}).map(([key, value]) => (
+                        <span key={key} className="text-sm text-zinc-300">
+                        {key} : {String(value)}
+                        </span>
+                    ))}
+                </div>
                 <p className="text-xs text-zinc-500 mt-1">{new Date(signal.created_at).toLocaleString()}</p>
             </div>
             <div className="flex items-center gap-3">
@@ -14,7 +20,7 @@
                 {signal.status === "active" && (
                     <button
                     onClick={() => handleArchive(signal.id)}
-                    className="text-xs text-red-400 hover:text-red-300 transition-colors"
+                    className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
                     >
                     Archive
                     </button>
