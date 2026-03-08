@@ -4,7 +4,13 @@
         <div key={signal.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex justify-between items-start">
             <div>
                 <span className="text-xs uppercase tracking-widest text-sky-400">{signal.type}</span>
-                <p className="text-sm text-zinc-300 mt-1">{JSON.stringify(signal.payload)}</p>
+                <div className="text-sm text-zinc-300 mt-1 space-y-1">
+                    {Object.entries(signal.payload).map(([key, value]) => (
+                        <p key={key}>
+                        <span className="text-zinc-500 capitalize">{key}:</span> {value}
+                        </p>
+                    ))}
+                </div>               
                 <p className="text-xs text-zinc-500 mt-1">{new Date(signal.created_at).toLocaleString()}</p>
             </div>
             <div className="flex items-center gap-3">

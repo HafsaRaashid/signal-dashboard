@@ -1,20 +1,26 @@
 import { useState } from "react";
 const API = import.meta.env.VITE_API_URL;
 
+const PAYLOAD_FIELDS = {
+  intent:    [{ key: "score", placeholder: "Score (e.g. 87)" }, { key: "topic", placeholder: "Topic" }],
+  web_visit: [{ key: "page", placeholder: "Page (e.g. pricing)" }],
+  form_fill: [{ key: "form", placeholder: "Form name" }],
+  linkedin:  [{ key: "campaign", placeholder: "Campaign name" }],
+};
 
 export default function AddSignalForm({ account, onSignalAdded }) {
-  const [form, setForm] = useState({ type: "", payload: "" });
+  const [form, setForm] = useState({ type: "", payload: {} });
 
   const handleSubmit = async () => {
-    if (!form.type || !form.payload) return;
+    if (!form.type || Object.keys(form.payload).length === 0) return;
     const res = await fetch(`${API}/api/signals`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ account_id: account.id, ...form }),
+      body: JSON.stringify({ account_id: account.id, type: form.type, payload: form.payload }),
     });
     const newSignal = await res.json();
     onSignalAdded(newSignal);
-    setForm({ type: "", payload: "" });
+    setForm({ type: "", payload: {} });
   };
 
   return (
@@ -23,7 +29,7 @@ export default function AddSignalForm({ account, onSignalAdded }) {
       <div className="flex flex-col gap-3">
         <select
           value={form.type}
-          onChange={(e) => setForm({ ...form, type: e.target.value })}
+          onChange={(e) => setForm({ type: e.target.value, payload: {} })}
           className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
         >
           <option value="">Select Type</option>
@@ -32,12 +38,17 @@ export default function AddSignalForm({ account, onSignalAdded }) {
           <option value="form_fill">Form Fill</option>
           <option value="linkedin">LinkedIn</option>
         </select>
-        <input
-          value={form.payload}
-          onChange={(e) => setForm({ ...form, payload: e.target.value })}
-          placeholder="Payload (e.g. visited pricing page)"
-          className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
-        />
+
+        {form.type && PAYLOAD_FIELDS[form.type].map(({ key, placeholder }) => (
+          <input
+            key={key}
+            value={form.payload[key] || ""}
+            onChange={(e) => setForm({ ...form, payload: { ...form.payload, [key]: e.target.value } })}
+            placeholder={placeholder}
+            className="bg-zinc-800 text-zinc-300 px-3 py-2 rounded-lg text-sm"
+          />
+        ))}
+
         <button
           onClick={handleSubmit}
           className="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg transition-colors"

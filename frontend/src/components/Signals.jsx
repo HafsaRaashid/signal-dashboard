@@ -72,7 +72,6 @@ export default function SignalList({ account }) {
       </div>
       
       {/* Add Signal Form */}
-      <AddSignalForm account={account} onSignalAdded={(s) => setSignals([s, ...signals])} />
       {showForm && (
         <AddSignalForm
           account={account}
