@@ -27,7 +27,7 @@ cp .env.example .env
 npm install
 ```
 
-## Environment Variables
+### Environment Variables
 
 Update the root `.env` with your database credentials:
 
@@ -69,3 +69,22 @@ npm run dev
 
 - API: `http://localhost:8000`
 - App: `http://localhost:5173`
+
+### Stack choices and why
+
+**React + Vite** — preferred stack per the assessment. State management with hooks kept things simple without needing any external library.
+**Laravel** — preferred stack per the assessment. Eloquent and built-in migrations/seeders kept the backend clean and fast to scaffold.
+**MySQL** — Preferred stack, fit for the relational account/signal data model.
+**Tailwind CSS** — quick to build with, no switching between CSS files and components.
+
+### Trade offs
+
+- **Input validation:** The POST /api/signals endpoint accepts data without strict validation. With more time I'd add proper validation with meaningful error responses.
+
+- **Tests:** With more time I'd add feature tests for each API endpoint covering happy paths and error cases.
+
+- **Pagination:** Signal lists are returned in full. With more time I'd add pagination.
+
+### What I would add if it was a real product feature
+
+- **Payload input:** In a real product, signals would be ingested automatically not manually. The form exists to satisfy the assessment requirement. Payload fields are structured per signal type rather than accepting raw JSON.
