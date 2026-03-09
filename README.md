@@ -43,6 +43,7 @@ Update `frontend/.env`:
 VITE_API_URL=http://127.0.0.1:8000
 ```
 
+**Note:** Make sure your MySQL server is running.
 Then run migrations and seed the database:
 
 ```bash
@@ -73,8 +74,11 @@ npm run dev
 ### Stack choices and why
 
 **React + Vite** — preferred stack per the assessment. State management with hooks kept things simple without needing any external library.
+
 **Laravel** — preferred stack per the assessment. Eloquent and built-in migrations/seeders kept the backend clean and fast to scaffold.
+
 **MySQL** — Preferred stack, fit for the relational account/signal data model.
+
 **Tailwind CSS** — quick to build with, no switching between CSS files and components.
 
 ### Trade offs

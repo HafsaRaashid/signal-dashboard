@@ -23,10 +23,13 @@ class AccountSeeder extends Seeder
 
         foreach($accountNames as $accountName){
 
+            // Create an account record
             $account = Account::create([
                 'name' => $accountName
             ]);
 
+            // Create related signals for the account
+            // account_id is automatically assigned by the relationship
             $account->signals()->createMany([
                 ['type' => 'web_visit', 'status' => 'active',   'payload' => ['page' => 'pricing']],
                 ['type' => 'intent',    'status' => 'active',   'payload' => ['keyword' => 'crm tools']],

@@ -13,6 +13,7 @@ class SignalController extends Controller
     {
         $query = Signal::query();
 
+        //filter by status and type if provided in the request
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
