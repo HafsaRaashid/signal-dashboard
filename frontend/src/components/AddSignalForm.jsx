@@ -2,7 +2,7 @@ import { useState } from "react";
 const API = import.meta.env.VITE_API_URL;
 
 const PAYLOAD_FIELDS = {
-  intent:    [{ key: "score", placeholder: "Score (e.g. 87)" }, { key: "topic", placeholder: "Topic" }],
+  intent:    [{ key: "keyword", placeholder: "Keyword" }],
   web_visit: [{ key: "page", placeholder: "Page (e.g. pricing)" }],
   form_fill: [{ key: "form", placeholder: "Form name" }],
   linkedin:  [{ key: "campaign", placeholder: "Campaign name" }],
@@ -12,12 +12,16 @@ export default function AddSignalForm({ account, onSignalAdded }) {
   const [form, setForm] = useState({ type: "", payload: {} });
 
   const handleSubmit = async () => {
+    // Don't submit if type or payload is missing
     if (!form.type || Object.keys(form.payload).length === 0) return;
+
+    // Create signal via API
     const res = await fetch(`${API}/api/signals`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ account_id: account.id, type: form.type, payload: form.payload }),
     });
+
     const newSignal = await res.json();
     onSignalAdded(newSignal);
     setForm({ type: "", payload: {} });

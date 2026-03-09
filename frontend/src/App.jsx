@@ -9,6 +9,8 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
+
+      {/* Sidebar toggle for mobile view */}
       <button
         className="md:hidden fixed top-4 left-4 z-0 p-2 bg-zinc-800 rounded"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -16,7 +18,7 @@ export default function App() {
         ☰
       </button>
       
-      {/* Sidebar */}
+      {/* Mobile sidebar */}
       {sidebarOpen && (
         <div className="md:hidden fixed inset-0 z-10">
           <Sidebar
@@ -29,12 +31,14 @@ export default function App() {
         </div>
       )}
 
-      {/* Sidebar always visible on desktop */}
+      {/* Desktop sidebar */}
       <div className="hidden md:block">
         <Sidebar onSelectAccount={setSelectedAccount} selectedAccount={selectedAccount} />
       </div>     
 
+      {/* Signals screen */}
       <div className="flex-1 overflow-y-auto p-8">
+        {/* Display signals based on account */}
         {selectedAccount ? (
           <Signals account={selectedAccount} />
         ) : (

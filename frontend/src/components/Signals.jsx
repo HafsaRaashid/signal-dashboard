@@ -65,7 +65,7 @@ export default function SignalList({ account }) {
 
         {/* Add signal button */}
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => setShowForm(true)}
           className="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg">
           + Add Signal
         </button>
