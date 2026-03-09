@@ -39,7 +39,7 @@ export default function SignalList({ account }) {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">{account.name}</h2>
+      <h2 className="text-xl font-semibold mb-4 ml-6 md:ml-0">{account.name}</h2>
 
       <div className="flex gap-4 mb-6">
         {/* Signal type filters */}
